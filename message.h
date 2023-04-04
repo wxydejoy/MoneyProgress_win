@@ -14,9 +14,14 @@ class message : public QWidget
 public:
     explicit message(QWidget *parent = nullptr);
     ~message();
+//    QPoint messagePoint;
+public slots:
+    void myhide();
 
 private:
+
     Ui::message *ui;
+
 };
 
 #endif // MESSAGE_H

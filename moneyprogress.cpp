@@ -3,7 +3,8 @@
 
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include <QTimer>
+
+#include <QDesktopWidget>
 
 
 MoneyProgress::MoneyProgress(QWidget *parent)
@@ -14,6 +15,8 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     this->setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);//隐藏标题栏
     this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
     this->setWindowIcon(QIcon(":/img/ico/48x48.ico"));
+
+
 
     //判断系统是否支持托盘图标显示
     if(!QSystemTrayIcon::isSystemTrayAvailable())
@@ -40,6 +43,22 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 //    trayIcon->showMessage("Test","contestt",QIcon(":/img/ico/32x32.ico"));
 //    message iconmessage = message();
 
+    //右下角弹窗
+    QDesktopWidget * pDeskdop = QApplication::desktop();
+
+    int posX = pDeskdop->width() / 2;
+    int posY = pDeskdop->height() / 2;
+
+    iconmessage.setGeometry(posX, posY+140, 300, 180);
+
+
+//    connect(timer,&QTimer::timeout,this,&MoneyProgress::update);
+    connect(timer2,&QTimer::timeout,&iconmessage,&message::hide);
+
+//    this->hide()
+
+
+
     connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(onTrayActivated(QSystemTrayIcon::ActivationReason)));
 
 }
@@ -49,7 +68,9 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
         case QSystemTrayIcon::Trigger:
             //单击托盘图标
             qDebug("click");
+
             iconmessage.show();
+            timer2->start(1500); //每分钟更新一次 后面看看要不要改成可修改的
             break;
         case QSystemTrayIcon::DoubleClick:
             //双击托盘图标
@@ -110,7 +131,6 @@ void MoneyProgress::keyPressEvent(QKeyEvent *event){
     switch (event->key()) {
     case Qt::Key_A:  //弹出关于界面
         qDebug("a");
-
         break;
     case Qt::Key_Escape:
         this->hide();
@@ -178,5 +198,41 @@ void MoneyProgress::on_Startcalculate_clicked()
     QTimer *timer = new QTimer;
     connect(timer,&QTimer::timeout,this,&MoneyProgress::update);
     timer->start(1000); //每分钟更新一次 后面看看要不要改成可修改的
+}
+
+
+void MoneyProgress::on_timeWorkup_userTimeChanged(const QTime &time)
+{
+    workUp = time;
+}
+
+
+void MoneyProgress::on_timeWorkdown_userTimeChanged(const QTime &time)
+{
+    workDown = time;
+}
+
+
+void MoneyProgress::on_timeSleepup_userTimeChanged(const QTime &time)
+{
+    sleepUp = time;
+}
+
+
+void MoneyProgress::on_timeSleepdown_userTimeChanged(const QTime &time)
+{
+    sleepDown = time;
+}
+
+
+void MoneyProgress::on_moneyMonth_editingFinished()
+{
+       money = ui->moneyMonth->text().toInt();
+}
+
+
+void MoneyProgress::on_workDay_editingFinished()
+{
+    days = ui->workDay->text().toInt();
 }
 

@@ -173,6 +173,16 @@
      </property>
      <item row="0" column="1">
       <widget class="QTimeEdit" name="timeWorkup">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei UI</family>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -235,10 +245,32 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="moneyMonth"/>
+      <widget class="QLineEdit" name="moneyMonth">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei UI</family>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 216, 58);</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="2">
       <widget class="QTimeEdit" name="timeWorkdown">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei UI</family>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -246,6 +278,13 @@
      </item>
      <item row="1" column="1">
       <widget class="QTimeEdit" name="timeSleepup">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei UI</family>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -253,6 +292,13 @@
      </item>
      <item row="1" column="2">
       <widget class="QTimeEdit" name="timeSleepdown">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei UI</family>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
@@ -273,7 +319,29 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="workDay"/>
+      <widget class="QLineEdit" name="workDay">
+       <property name="font">
+        <font>
+         <family>Microsoft YaHei UI</family>
+         <pointsize>12</pointsize>
+         <bold>true</bold>
+         <underline>false</underline>
+        </font>
+       </property>
+       <property name="tabletTracking">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 216, 58);
+</string>
+       </property>
+       <property name="maxLength">
+        <number>100</number>
+       </property>
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item row="3" column="2">
       <widget class="QLabel" name="label_11">

@@ -2,10 +2,11 @@
 #define MONEYPROGRESS_H
 
 #include <QMainWindow>
-
+#include <QTimer>
 #include "message.h"
 #include <QSystemTrayIcon>    //任务栏类
 #include <QMenu>    //菜单类
+#include <QTime>
 
 
 QT_BEGIN_NAMESPACE
@@ -22,8 +23,19 @@ public:
 
 private:
     Ui::MoneyProgress *ui;
-
+    //任务栏进度条窗口
     message iconmessage = message();
+
+    //上班时间
+    QTime workUp = QTime();
+    QTime workDown = QTime();
+    //午休
+    QTime sleepUp = QTime();
+    QTime sleepDown = QTime();
+    //工资
+    float money=0;
+    //天数
+    int days=0;
 
     //窗口任务栏属性
     QSystemTrayIcon *trayIcon;
@@ -44,6 +56,9 @@ private:
     //update
     void update();
 
+    //定时器
+    QTimer *timer2 = new QTimer;
+
 private slots:
     void showNormal();
 
@@ -52,5 +67,6 @@ private slots:
     //托盘单击事件
     void onTrayActivated(QSystemTrayIcon::ActivationReason reason);
 
+    void on_timeWorkup_userTimeChanged(const QTime &time);
 };
 #endif // MONEYPROGRESS_H
