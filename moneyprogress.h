@@ -68,5 +68,10 @@ private slots:
     void onTrayActivated(QSystemTrayIcon::ActivationReason reason);
 
     void on_timeWorkup_userTimeChanged(const QTime &time);
+    void on_timeWorkdown_userTimeChanged(const QTime &time);
+    void on_timeSleepup_userTimeChanged(const QTime &time);
+    void on_timeSleepdown_userTimeChanged(const QTime &time);
+    void on_moneyMonth_editingFinished();
+    void on_workDay_editingFinished();
 };
 #endif // MONEYPROGRESS_H
