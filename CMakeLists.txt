@@ -19,6 +19,9 @@ set(PROJECT_SOURCES
         moneyprogress.cpp
         moneyprogress.h
         moneyprogress.ui
+        message.ui
+        message.cpp
+        message.h
         img.qrc
 )
 

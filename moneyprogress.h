@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-
+#include "message.h"
 #include <QSystemTrayIcon>    //任务栏类
 #include <QMenu>    //菜单类
 
@@ -22,6 +22,8 @@ public:
 
 private:
     Ui::MoneyProgress *ui;
+
+    message iconmessage = message();
 
     //窗口任务栏属性
     QSystemTrayIcon *trayIcon;
@@ -46,5 +48,9 @@ private slots:
     void showNormal();
 
     void on_Startcalculate_clicked();
+
+    //托盘单击事件
+    void onTrayActivated(QSystemTrayIcon::ActivationReason reason);
+
 };
 #endif // MONEYPROGRESS_H
