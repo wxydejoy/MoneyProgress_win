@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>moneyprogress.qss</file>
+        <file>img/avatar.png</file>
+        <file>img/ico/32x32.ico</file>
+        <file>img/ico/48x48.ico</file>
+        <file>img/ico/64x64.ico</file>
+    </qresource>
+</RCC>
