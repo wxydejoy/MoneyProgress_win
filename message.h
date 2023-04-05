@@ -13,6 +13,7 @@ class message : public QWidget
 
 public:
     explicit message(QWidget *parent = nullptr);
+    void update(int progress,float money);
     ~message();
 //    QPoint messagePoint;
 public slots:

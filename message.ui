@@ -72,14 +72,17 @@
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>40</x>
       <y>130</y>
       <width>231</width>
       <height>23</height>
      </rect>
     </property>
     <property name="value">
-     <number>24</number>
+     <number>0</number>
+    </property>
+    <property name="textVisible">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -99,12 +102,12 @@ border-radius:15px;</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="labelTitle1_2">
+   <widget class="QLabel" name="labelMoney">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>60</x>
       <y>90</y>
-      <width>111</width>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
@@ -123,7 +126,7 @@ border-radius:15px;</string>
    <zorder>label</zorder>
    <zorder>labelTitle1</zorder>
    <zorder>progressBar</zorder>
-   <zorder>labelTitle1_2</zorder>
+   <zorder>labelMoney</zorder>
   </widget>
  </widget>
  <resources/>

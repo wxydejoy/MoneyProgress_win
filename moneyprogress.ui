@@ -91,7 +91,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background-color: rgb(255, 216, 58);</string>
     </property>
     <property name="text">
      <string>开始计价</string>
@@ -111,7 +111,7 @@
      <rect>
       <x>30</x>
       <y>510</y>
-      <width>53</width>
+      <width>171</width>
       <height>16</height>
      </rect>
     </property>
@@ -124,7 +124,7 @@
      <rect>
       <x>30</x>
       <y>530</y>
-      <width>53</width>
+      <width>151</width>
       <height>16</height>
      </rect>
     </property>
@@ -137,7 +137,7 @@
      <rect>
       <x>30</x>
       <y>550</y>
-      <width>53</width>
+      <width>191</width>
       <height>16</height>
      </rect>
     </property>
@@ -150,7 +150,7 @@
      <rect>
       <x>30</x>
       <y>570</y>
-      <width>53</width>
+      <width>191</width>
       <height>16</height>
      </rect>
     </property>
@@ -185,6 +185,29 @@
        </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="dateTime">
+        <datetime>
+         <hour>8</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>2000</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
+       <property name="minimumDateTime">
+        <datetime>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>2000</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
+       <property name="timeSpec">
+        <enum>Qt::LocalTime</enum>
        </property>
       </widget>
      </item>
@@ -260,6 +283,9 @@
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 216, 58);</string>
        </property>
+       <property name="text">
+        <string>300</string>
+       </property>
       </widget>
      </item>
      <item row="0" column="2">
@@ -273,6 +299,19 @@
        </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="dateTime">
+        <datetime>
+         <hour>17</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>2000</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
+       <property name="timeSpec">
+        <enum>Qt::LocalTime</enum>
        </property>
       </widget>
      </item>
@@ -288,6 +327,19 @@
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
+       <property name="dateTime">
+        <datetime>
+         <hour>12</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>2000</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
+       <property name="timeSpec">
+        <enum>Qt::LocalTime</enum>
+       </property>
       </widget>
      </item>
      <item row="1" column="2">
@@ -301,6 +353,19 @@
        </property>
        <property name="buttonSymbols">
         <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="dateTime">
+        <datetime>
+         <hour>13</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>2000</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
+       <property name="timeSpec">
+        <enum>Qt::LocalTime</enum>
        </property>
       </widget>
      </item>
@@ -334,6 +399,9 @@
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 216, 58);
 </string>
+       </property>
+       <property name="text">
+        <string>24</string>
        </property>
        <property name="maxLength">
         <number>100</number>

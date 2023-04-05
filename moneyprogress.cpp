@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 
+
 #include <QDesktopWidget>
 
 
@@ -49,10 +50,27 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     int posX = pDeskdop->width() / 2;
     int posY = pDeskdop->height() / 2;
 
+
+
+    // 更新一次数据(默认数据)
+    workDown = ui->timeWorkdown->time();
+    workUp = ui->timeWorkup->time();
+    sleepDown = ui->timeSleepdown->time();
+    sleepUp = ui->timeSleepup->time();
+    money = 300;
+    days = 24;
+
+
+
+
+
+
     iconmessage.setGeometry(posX, posY+140, 300, 180);
+    updateM();
 
 
 //    connect(timer,&QTimer::timeout,this,&MoneyProgress::update);
+
     connect(timer2,&QTimer::timeout,&iconmessage,&message::hide);
 
 //    this->hide()
@@ -68,9 +86,9 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
         case QSystemTrayIcon::Trigger:
             //单击托盘图标
             qDebug("click");
-
+            updateM();
             iconmessage.show();
-            timer2->start(1500); //每分钟更新一次 后面看看要不要改成可修改的
+            timer2->start(2000); //每分钟更新一次 后面看看要不要改成可修改的
             break;
         case QSystemTrayIcon::DoubleClick:
             //双击托盘图标
@@ -78,6 +96,7 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
             this->show();
             break;
         default:
+            update();
             break;
         }
 }
@@ -85,8 +104,48 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
 void MoneyProgress::update(){
     //
     qDebug("update");
+    int second = (workUp.secsTo(workDown)-sleepUp.secsTo(sleepDown));
+    float hours = second/3600.0;
+
+    float moneyday = money/days;
+    float moneysecond = moneyday/second;
+    // 判断两个界面是否可见
+    if (this->isVisible() ){
+        ui->labelDay->setText("您一月工作"+QString::number(days)+"天;");
+        ui->labelMoneyDay->setText("您一天能挣"+QString::number(moneyday,'f',1)+"元;");
+        ui->labelHourDay->setText("您一天工作"+QString::number(hours,'f',1)+"小时;");
+        ui->labelMoneySecond->setText("您一秒钟能挣"+QString::number(moneysecond,'f',6)+"元;");
+
+    }
+    if(iconmessage.isVisible()){
+        int progress = 0;
+        progress = workUp.secsTo(QTime::currentTime())*100/second;
+        iconmessage.update(progress,moneyday);
+
+    }
 
 }
+void MoneyProgress::updateM(){
+    //
+    qDebug("update");
+    int second = (workUp.secsTo(workDown)-sleepUp.secsTo(sleepDown));
+    float hours = second/3600.0;
+
+    float moneyday = money/days;
+    float moneysecond = moneyday/second;
+    // 判断两个界面是否可见
+
+    ui->labelDay->setText("您一月工作"+QString::number(days)+"天;");
+    ui->labelMoneyDay->setText("您一天能挣"+QString::number(moneyday,'f',1)+"元;");
+    ui->labelHourDay->setText("您一天工作"+QString::number(hours,'f',1)+"小时;");
+    ui->labelMoneySecond->setText("您一秒钟能挣"+QString::number(moneysecond,'f',6)+"元;");
+    int progress = 0;
+    progress = workUp.secsTo(QTime::currentTime())*100/second;
+    iconmessage.update(progress,moneyday);
+}
+
+
+
 
 void MoneyProgress::createMenu()
 {
@@ -196,7 +255,11 @@ void MoneyProgress::on_Startcalculate_clicked()
     //启动定时器
     //计时器 用来更新
     QTimer *timer = new QTimer;
-    connect(timer,&QTimer::timeout,this,&MoneyProgress::update);
+//    void (MoneyProgress:: *pup)(int) = &MoneyProgress::update;
+//    QOverload::of(&QComboBox::currentIndexChanged),[=](int index){ /* … */ })
+
+
+    connect(timer,&QTimer::timeout,this,qOverload<>(&MoneyProgress::update));
     timer->start(1000); //每分钟更新一次 后面看看要不要改成可修改的
 }
 
@@ -210,6 +273,9 @@ void MoneyProgress::on_timeWorkup_userTimeChanged(const QTime &time)
 void MoneyProgress::on_timeWorkdown_userTimeChanged(const QTime &time)
 {
     workDown = time;
+    //有效工时计算与显示
+    qDebug("工作时间 %f",(workUp.secsTo(workDown)-sleepUp.secsTo(sleepDown))/3600.0);
+    update();
 }
 
 
@@ -222,17 +288,22 @@ void MoneyProgress::on_timeSleepup_userTimeChanged(const QTime &time)
 void MoneyProgress::on_timeSleepdown_userTimeChanged(const QTime &time)
 {
     sleepDown = time;
+    update();
+    qDebug("午休时间 %f",sleepUp.secsTo(sleepDown)/3600.0);
 }
 
 
 void MoneyProgress::on_moneyMonth_editingFinished()
 {
        money = ui->moneyMonth->text().toInt();
+       update();
 }
 
 
 void MoneyProgress::on_workDay_editingFinished()
 {
     days = ui->workDay->text().toInt();
+    update();
+
 }
 

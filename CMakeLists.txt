@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
         message.cpp
         message.h
         img.qrc
+        logo.rc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

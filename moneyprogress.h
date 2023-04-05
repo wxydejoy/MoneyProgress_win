@@ -55,6 +55,8 @@ private:
 
     //update
     void update();
+    void updateM();
+
 
     //定时器
     QTimer *timer2 = new QTimer;
