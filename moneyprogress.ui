@@ -427,6 +427,19 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="labelAbout">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>500</y>
+      <width>161</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

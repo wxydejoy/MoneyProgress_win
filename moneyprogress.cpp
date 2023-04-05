@@ -60,7 +60,14 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     money = 300;
     days = 24;
 
+//    QString str;
+//    str = QString("My blog: <a href=\"https://blog.csdn.net/humanking7\">https://blog.csdn.net/humanking7 </a></h2>");
+//    QLabel *lab = new QLabel(str);
+    ui->labelAbout->setText("<a href=\"https://c.undf.top\">Blog </a><br/> <a href=\"https://github.com/wxydejoy/MoneyProgress_win\">Github </a>");
 
+    ui->labelAbout->setOpenExternalLinks(true);//如果没有这句，就只能通过linkActivated信号，连接到自定义槽函数中打开
+    ui->labelAbout->hide();
+//    lab->setWindowTitle("Test Html support");
 
 
 
@@ -190,6 +197,12 @@ void MoneyProgress::keyPressEvent(QKeyEvent *event){
     switch (event->key()) {
     case Qt::Key_A:  //弹出关于界面
         qDebug("a");
+        if(!ui->labelAbout->isVisible())
+            ui->labelAbout->show();
+        else
+            ui->labelAbout->hide();
+
+
         break;
     case Qt::Key_Escape:
         this->hide();
