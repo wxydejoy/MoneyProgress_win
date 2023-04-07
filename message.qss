@@ -16,11 +16,12 @@ QWidget#centralwidget {
 
 }
 
-
-
-QPushButton#Startcalculate {
-    border: 3px solid #ffee6f;
+QProgressBar {
+    border: 2px solid rgb(15, 185, 236);
+    border-radius: 5px;
 }
-/* QLabel#label_2 {
-    border: 3px solid #ffee6f;
-} */
+
+QProgressBar::chunk {
+    background-color: #ffee6f;
+    /* width: 20px; */
+}

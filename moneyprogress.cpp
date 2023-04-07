@@ -1,6 +1,6 @@
 #include "moneyprogress.h"
 #include "./ui_moneyprogress.h"
-
+#include <QFile>
 #include <QMouseEvent>
 #include <QKeyEvent>
 
@@ -17,7 +17,9 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
     this->setWindowIcon(QIcon(":/img/ico/48x48.ico"));
 
-
+    QFile qss(":/moneyprogress.qss");
+    qss.open(QFile::ReadOnly);
+    this->setStyleSheet(qss.readAll());
 
     //判断系统是否支持托盘图标显示
     if(!QSystemTrayIcon::isSystemTrayAvailable())
@@ -47,8 +49,8 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     //右下角弹窗
     QDesktopWidget * pDeskdop = QApplication::desktop();
 
-    int posX = pDeskdop->width() / 2;
-    int posY = pDeskdop->height() / 2;
+    int posX = pDeskdop->width() ;
+    int posY = pDeskdop->height() ;
 
 
 
@@ -72,7 +74,7 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
 
 
-    iconmessage.setGeometry(posX, posY+140, 300, 180);
+    iconmessage.setGeometry(posX-320, posY-220, 300, 180);
     updateM();
 
 

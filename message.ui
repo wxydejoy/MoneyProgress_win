@@ -24,15 +24,15 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>291</width>
-     <height>171</height>
+     <width>301</width>
+     <height>181</height>
     </rect>
    </property>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>10</y>
+      <x>120</x>
+      <y>20</y>
       <width>51</width>
       <height>51</height>
      </rect>
@@ -52,8 +52,8 @@
    <widget class="QLabel" name="labelTitle1">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>60</y>
+      <x>110</x>
+      <y>70</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -73,7 +73,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>130</y>
+      <y>140</y>
       <width>231</width>
       <height>23</height>
      </rect>
@@ -82,31 +82,14 @@
      <number>0</number>
     </property>
     <property name="textVisible">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>280</width>
-      <height>160</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-border-radius:15px;</string>
-    </property>
-    <property name="text">
-     <string/>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLabel" name="labelMoney">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>90</y>
+      <x>80</x>
+      <y>100</y>
       <width>191</width>
       <height>31</height>
      </rect>
@@ -122,11 +105,6 @@ border-radius:15px;</string>
      <string>当前已挣0元</string>
     </property>
    </widget>
-   <zorder>label_2</zorder>
-   <zorder>label</zorder>
-   <zorder>labelTitle1</zorder>
-   <zorder>progressBar</zorder>
-   <zorder>labelMoney</zorder>
   </widget>
  </widget>
  <resources/>

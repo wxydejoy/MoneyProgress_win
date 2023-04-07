@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>MoneyProgress</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -430,8 +433,8 @@
    <widget class="QLabel" name="labelAbout">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>500</y>
+      <x>590</x>
+      <y>510</y>
       <width>161</width>
       <height>81</height>
      </rect>
@@ -440,6 +443,44 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>550</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Esc 隐藏主界面</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>570</y>
+      <width>61</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>A 作者信息</string>
+    </property>
+   </widget>
+   <zorder>labelAbout</zorder>
+   <zorder>label</zorder>
+   <zorder>labelTitle1</zorder>
+   <zorder>labelTitle2</zorder>
+   <zorder>Startcalculate</zorder>
+   <zorder>labelDay</zorder>
+   <zorder>labelMoneyDay</zorder>
+   <zorder>labelHourDay</zorder>
+   <zorder>labelMoneySecond</zorder>
+   <zorder>gridLayoutWidget</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
   </widget>
  </widget>
  <resources/>
