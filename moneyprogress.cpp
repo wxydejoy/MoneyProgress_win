@@ -3,7 +3,8 @@
 #include <QFile>
 #include <QMouseEvent>
 #include <QKeyEvent>
-
+#include <QCursor>
+#include <QtDebug>
 
 #include <QDesktopWidget>
 
@@ -52,8 +53,7 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     int posX = pDeskdop->width() ;
     int posY = pDeskdop->height() ;
 
-
-
+    iconmessage.setGeometry(posX - 320 , posY-220, 300, 180);
     // 更新一次数据(默认数据)
     workDown = ui->timeWorkdown->time();
     workUp = ui->timeWorkup->time();
@@ -74,7 +74,7 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
 
 
-    iconmessage.setGeometry(posX-320, posY-220, 300, 180);
+
     updateM();
 
 
@@ -95,6 +95,17 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
         case QSystemTrayIcon::Trigger:
             //单击托盘图标
             qDebug("click");
+        qDebug()<< QCursor().pos().x()<<QCursor().pos().y();
+            // 判断鼠标位置与屏幕的关系 骚乱
+            iconmessage.setGeometry(((QCursor().pos().x() + 300)>QApplication::desktop()->width()?
+                                     QApplication::desktop()->width()-300:QCursor().pos().x()),
+                                ((QCursor().pos().y() + 180)>QApplication::desktop()->height()?
+                                     QApplication::desktop()->height()-210:QCursor().pos().y()-210),
+                                300, 180);
+        qDebug()<<((QCursor().pos().x() + 300)>QApplication::desktop()->width()?
+                             QApplication::desktop()->width()-300:QCursor().pos().x())<<
+                ((QCursor().pos().y() + 180)>QApplication::desktop()->height()?
+                     QApplication::desktop()->height()-210:QCursor().pos().y()-210);
             updateM();
             iconmessage.show();
             timer2->start(2000); //每分钟更新一次 后面看看要不要改成可修改的
