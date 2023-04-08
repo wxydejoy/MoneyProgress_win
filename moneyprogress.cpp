@@ -93,6 +93,10 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 }
 
 
+
+
+
+
 void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
     switch (reason) {
         case QSystemTrayIcon::Trigger:
@@ -102,7 +106,7 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
 
         //鼠标点物理屏幕的尺寸
         qDebug()<< QApplication::screenAt(QCursor().pos())->geometry().width()<<QApplication::screenAt(QCursor().pos())->geometry().height();
-            // 判断鼠标位置与屏幕的关系 骚乱
+            // 判断鼠标位置与屏幕的关系
             iconmessage.setGeometry(((QCursor().pos().x() + 320)>QApplication::screenAt(QCursor().pos())->geometry().width()?
                                      QApplication::screenAt(QCursor().pos())->geometry().width()-320:QCursor().pos().x()),
                                 ((QCursor().pos().y() + 210)>QApplication::screenAt(QCursor().pos())->geometry().height()?
@@ -111,7 +115,7 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
 
             updateM();
             iconmessage.show();
-            timer2->start(2000); //每分钟更新一次 后面看看要不要改成可修改的
+            timer2->start(2000); //
             break;
         case QSystemTrayIcon::DoubleClick:
             //双击托盘图标
@@ -142,8 +146,12 @@ void MoneyProgress::update(){
     }
     if(iconmessage.isVisible()){
         int progress = 0;
-        progress = workUp.secsTo(QTime::currentTime())*100/second;
+        if(QTime::currentTime()<sleepUp)
+            progress = workUp.secsTo(QTime::currentTime())*1000/second;
+        else
+            progress = (workUp.secsTo(QTime::currentTime())-sleepUp.secsTo(sleepDown))*1000/second;
         iconmessage.update(progress,moneyday);
+        qDebug()<< progress;
 
     }
 
@@ -163,7 +171,11 @@ void MoneyProgress::updateM(){
     ui->labelHourDay->setText("您一天工作"+QString::number(hours,'f',1)+"小时;");
     ui->labelMoneySecond->setText("您一秒钟能挣"+QString::number(moneysecond,'f',6)+"元;");
     int progress = 0;
-    progress = workUp.secsTo(QTime::currentTime())*100/second;
+    if(QTime::currentTime()<sleepUp)
+        progress = workUp.secsTo(QTime::currentTime())*1000/second;
+    else
+        progress = (workUp.secsTo(QTime::currentTime())-sleepUp.secsTo(sleepDown))*1000/second;
+    qDebug()<< progress;
     iconmessage.update(progress,moneyday);
 }
 

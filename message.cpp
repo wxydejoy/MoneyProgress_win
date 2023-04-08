@@ -11,6 +11,7 @@ message::message(QWidget *parent) :
     QFile qss(":/message.qss");
     qss.open(QFile::ReadOnly);
     this->setStyleSheet(qss.readAll());
+    ui->progressBar->setRange(0,1000);
 
 }
 
