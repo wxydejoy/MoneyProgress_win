@@ -5,6 +5,8 @@
 #include <QKeyEvent>
 #include <QCursor>
 #include <QtDebug>
+#include <QScreen>
+#include <QRect>
 
 #include <QDesktopWidget>
 
@@ -90,22 +92,23 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
 }
 
+
 void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason){
     switch (reason) {
         case QSystemTrayIcon::Trigger:
             //单击托盘图标
             qDebug("click");
         qDebug()<< QCursor().pos().x()<<QCursor().pos().y();
+
+        //鼠标点物理屏幕的尺寸
+        qDebug()<< QApplication::screenAt(QCursor().pos())->geometry().width()<<QApplication::screenAt(QCursor().pos())->geometry().height();
             // 判断鼠标位置与屏幕的关系 骚乱
-            iconmessage.setGeometry(((QCursor().pos().x() + 300)>QApplication::desktop()->width()?
-                                     QApplication::desktop()->width()-300:QCursor().pos().x()),
-                                ((QCursor().pos().y() + 180)>QApplication::desktop()->height()?
-                                     QApplication::desktop()->height()-210:QCursor().pos().y()-210),
+            iconmessage.setGeometry(((QCursor().pos().x() + 320)>QApplication::screenAt(QCursor().pos())->geometry().width()?
+                                     QApplication::screenAt(QCursor().pos())->geometry().width()-320:QCursor().pos().x()),
+                                ((QCursor().pos().y() + 210)>QApplication::screenAt(QCursor().pos())->geometry().height()?
+                                     QApplication::screenAt(QCursor().pos())->geometry().height()-210:QCursor().pos().y()-210),
                                 300, 180);
-        qDebug()<<((QCursor().pos().x() + 300)>QApplication::desktop()->width()?
-                             QApplication::desktop()->width()-300:QCursor().pos().x())<<
-                ((QCursor().pos().y() + 180)>QApplication::desktop()->height()?
-                     QApplication::desktop()->height()-210:QCursor().pos().y()-210);
+
             updateM();
             iconmessage.show();
             timer2->start(2000); //每分钟更新一次 后面看看要不要改成可修改的
