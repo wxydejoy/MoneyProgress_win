@@ -7,8 +7,8 @@
 #include <QSystemTrayIcon>    //任务栏类
 #include <QMenu>    //菜单类
 #include <QTime>
-
-
+#include <QSettings>
+#include <QCoreApplication>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MoneyProgress; }
 QT_END_NAMESPACE
@@ -25,6 +25,9 @@ private:
     Ui::MoneyProgress *ui;
     //任务栏进度条窗口
     message iconmessage = message();
+
+    //设置
+
 
     //上班时间
     QTime workUp = QTime();
