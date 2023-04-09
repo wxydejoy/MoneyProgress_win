@@ -181,12 +181,19 @@ void MoneyProgress::update()
     qDebug("update");
     int second = (workUp.secsTo(workDown) - sleepUp.secsTo(sleepDown));
     float hours = second / 3600.0;
-
+    int progress = 0;
     float moneyday = money / days;
     float moneysecond = moneyday / second;
+
+    if (QTime::currentTime() < sleepUp) //判断当前使是午休之前还是之后
+        progress = workUp.secsTo(QTime::currentTime()) * 1000 / second;
+    else
+        progress = (workUp.secsTo(QTime::currentTime()) - sleepUp.secsTo(sleepDown)) * 1000 / second;
+
     // 判断两个界面是否可见
     if (this->isVisible())
     {
+        ui->labelMoneyNow->setText("您当前已经挣了"+QString::number(moneyday*progress/1000,'f',1)+"元;");
         ui->labelDay->setText("您一月工作" + QString::number(days) + "天;");
         ui->labelMoneyDay->setText("您一天能挣" + QString::number(moneyday, 'f', 1) + "元;");
         ui->labelHourDay->setText("您一天工作" + QString::number(hours, 'f', 1) + "小时;");
@@ -194,11 +201,8 @@ void MoneyProgress::update()
     }
     if (iconmessage.isVisible())
     {
-        int progress = 0;
-        if (QTime::currentTime() < sleepUp)
-            progress = workUp.secsTo(QTime::currentTime()) * 1000 / second;
-        else
-            progress = (workUp.secsTo(QTime::currentTime()) - sleepUp.secsTo(sleepDown)) * 1000 / second;
+
+
         iconmessage.update(progress, moneyday);
         qDebug() << progress;
     }
@@ -212,17 +216,18 @@ void MoneyProgress::updateM()
 
     float moneyday = money / days;
     float moneysecond = moneyday / second;
-    // 判断两个界面是否可见
-
-    ui->labelDay->setText("您一月工作" + QString::number(days) + "天;");
-    ui->labelMoneyDay->setText("您一天能挣" + QString::number(moneyday, 'f', 1) + "元;");
-    ui->labelHourDay->setText("您一天工作" + QString::number(hours, 'f', 1) + "小时;");
-    ui->labelMoneySecond->setText("您一秒钟能挣" + QString::number(moneysecond, 'f', 6) + "元;");
     int progress = 0;
     if (QTime::currentTime() < sleepUp)
         progress = workUp.secsTo(QTime::currentTime()) * 1000 / second;
     else
         progress = (workUp.secsTo(QTime::currentTime()) - sleepUp.secsTo(sleepDown)) * 1000 / second;
+    // 判断两个界面是否可见
+    ui->labelMoneyNow->setText("您当前已经挣了"+QString::number(moneyday*progress/1000,'f',1)+"元;");
+    ui->labelDay->setText("您一月工作" + QString::number(days) + "天;");
+    ui->labelMoneyDay->setText("您一天能挣" + QString::number(moneyday, 'f', 1) + "元;");
+    ui->labelHourDay->setText("您一天工作" + QString::number(hours, 'f', 1) + "小时;");
+    ui->labelMoneySecond->setText("您一秒钟能挣" + QString::number(moneysecond, 'f', 6) + "元;");
+
     qDebug() << progress;
     iconmessage.update(progress, moneyday);
 }
