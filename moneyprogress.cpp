@@ -109,14 +109,10 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
     ui->labelAbout->setOpenExternalLinks(true); // 如果没有这句，就只能通过linkActivated信号，连接到自定义槽函数中打开
     ui->labelAbout->hide();
-<<<<<<< HEAD
-//    lab->setWindowTitle("Test Html support");
 
     ui->moneyMonth->setAttribute(Qt::WA_InputMethodEnabled, false);	//设置账号输入框点击时无法输入中文
     ui->workDay->setAttribute(Qt::WA_InputMethodEnabled, false);	//设置账号输入框点击时无法输入中文
-=======
-    //    lab->setWindowTitle("Test Html support");
->>>>>>> cd202c3110d3f958a2d230f20b5583dcd064c66c
+
 
     updateM();
 
@@ -329,7 +325,7 @@ void MoneyProgress::mouseMoveEvent(QMouseEvent *event) // 窗口移动事件
 
 void MoneyProgress::on_Startcalculate_clicked()
 {
-<<<<<<< HEAD
+
     //启动定时器
     //计时器 用来更新
 //    QTimer *timer = new QTimer;
@@ -350,18 +346,7 @@ void MoneyProgress::on_Startcalculate_clicked()
 
 
 
-//    connect(timer,&QTimer::timeout,this,qOverload<>(&MoneyProgress::update));
-//    timer->start(1000); //每分钟更新一次 后面看看要不要改成可修改的
-=======
-    // 启动定时器
-    // 计时器 用来更新
-    QTimer *timer = new QTimer;
-    //    void (MoneyProgress:: *pup)(int) = &MoneyProgress::update;
-    //    QOverload::of(&QComboBox::currentIndexChanged),[=](int index){ /* … */ })
 
-    connect(timer, &QTimer::timeout, this, qOverload<>(&MoneyProgress::update));
-    timer->start(1000); // 每分钟更新一次 后面看看要不要改成可修改的
->>>>>>> cd202c3110d3f958a2d230f20b5583dcd064c66c
 }
 
 void MoneyProgress::on_timeWorkup_userTimeChanged(const QTime &time)
