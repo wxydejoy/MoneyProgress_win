@@ -11,12 +11,13 @@ message::message(QWidget *parent) :
     QFile qss(":/message.qss");
     qss.open(QFile::ReadOnly);
     this->setStyleSheet(qss.readAll());
+    ui->progressBar->setRange(0,1000);
 
 }
 
 void message::update(int progress,float money){
     //更新进度条
-    ui->labelMoney->setText("预计今日一共挣"+QString::number(money,'f',1)+"元");
+    ui->labelMoney->setText("您当前已经挣了"+QString::number(money*progress/1000,'f',1)+"元");
     ui->progressBar->setValue(progress);
 
 }

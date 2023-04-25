@@ -6,5 +6,6 @@
         <file>img/ico/48x48.ico</file>
         <file>img/ico/64x64.ico</file>
         <file>message.qss</file>
+        <file>qt/etc/qt.conf</file>
     </qresource>
 </RCC>
