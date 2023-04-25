@@ -35,7 +35,7 @@ private:
     //工资
     float money=0;
     //天数
-    int days=0;
+    float days=0;
 
     //窗口任务栏属性
     QSystemTrayIcon *trayIcon;
@@ -56,8 +56,8 @@ private:
     //update
     void update();
     void updateM();
-
-
+    //定时更新
+    QTimer *timer = new QTimer;
     //定时器
     QTimer *timer2 = new QTimer;
 
