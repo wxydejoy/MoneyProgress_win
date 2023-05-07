@@ -6,8 +6,9 @@ message::message(QWidget *parent) :
     ui(new Ui::message)
 {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);//隐藏标题栏
+    this->setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint |Qt::ToolTip);//隐藏标题栏
     this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
+
     QFile qss(":/message.qss");
     qss.open(QFile::ReadOnly);
     this->setStyleSheet(qss.readAll());

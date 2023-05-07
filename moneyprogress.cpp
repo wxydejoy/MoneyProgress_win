@@ -14,8 +14,9 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MoneyProgress)
 {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint); // 隐藏标题栏
+    this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::ToolTip); // 隐藏标题栏
     this->setAttribute(Qt::WA_TranslucentBackground);                                      // 背景透明
+
     this->setWindowIcon(QIcon(":/img/ico/48x48.ico"));
 
     QFile qss(":/moneyprogress.qss");
@@ -46,6 +47,10 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     //    trayIcon->showMessage("Test","contestt",QIcon(":/img/ico/32x32.ico"));
     //    message iconmessage = message();
 
+
+
+    ui->hide_label->setVisible(false);
+
     // 右下角弹窗
     QDesktopWidget *pDeskdop = QApplication::desktop();
 
@@ -65,6 +70,7 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     settings.sync();
     qDebug()<<settings.value("set");
     qDebug()<<settings.value("workDown");
+    qDebug()<<settings.value("barpoint");
     if (settings.value("set").toBool() == true)
     { // 如果设置了
         qDebug()<< settings.value("workDown");
@@ -74,12 +80,23 @@ MoneyProgress::MoneyProgress(QWidget *parent)
         sleepUp = settings.value("sleepUp").toTime();
         money = settings.value("money").toInt();
         days = settings.value("days").toInt();
+
         ui->timeWorkdown->setTime(workDown);
         ui->timeWorkup->setTime(workUp);
         ui->timeSleepdown->setTime(sleepDown);
         ui->timeSleepup->setTime(sleepUp);
         ui->moneyMonth->setText(QString::number(money));
         ui->workDay->setText(QString::number(days));
+        if(settings.value("barpoint").isValid()){
+            barpoint = settings.value("barpoint").toPoint();
+            ui->barcheck->setChecked(true);
+            newbar.show();
+            newbar.move(barpoint.x(),barpoint.y());
+        }else{
+//            this->x()+this->width()*2/5,this->y()+this->height()*3/4
+            barpoint.setX(QApplication::screenAt(QCursor().pos())->geometry().width()/2-newbar.width()/2);
+            barpoint.setY(QApplication::screenAt(QCursor().pos())->geometry().height()/2+newbar.height());
+        }
         
 
     }
@@ -92,12 +109,18 @@ MoneyProgress::MoneyProgress(QWidget *parent)
         sleepUp = ui->timeSleepup->time();
         money = 300;
         days = 24;
+
+        barpoint.setX(QApplication::screenAt(QCursor().pos())->geometry().width()/2-newbar.width()/2);
+        barpoint.setY(QApplication::screenAt(QCursor().pos())->geometry().height()/2+newbar.height());
+
         settings.setValue("workDown", workDown);
         settings.setValue("workUp", workUp);
         settings.setValue("sleepDown", sleepDown);
         settings.setValue("sleepUp", sleepUp);
         settings.setValue("money", money);
         settings.setValue("days", days);
+        settings.setValue("barpoint",barpoint);
+
         settings.sync();
 
     }
@@ -114,10 +137,23 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     updateM();
 
     //    connect(timer,&QTimer::timeout,this,&MoneyProgress::update);
+    //    newbar.show();
+    // 启动定时器
+    // 计时器 用来更新
+    QTimer *timer = new QTimer;
+    //    void (MoneyProgress:: *pup)(int) = &MoneyProgress::update;
+    //    QOverload::of(&QComboBox::currentIndexChanged),[=](int index){ /* … */ })
+
+    connect(timer, &QTimer::timeout, this, qOverload<>(&MoneyProgress::update));
+    timer->start(1000); // 每分钟更新一次 后面看看要不要改成可修改的
+
+
 
     connect(timer2, &QTimer::timeout, &iconmessage, &message::hide);
 
     //    this->hide()
+
+//    newbar.show();
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onTrayActivated(QSystemTrayIcon::ActivationReason)));
 }
@@ -125,6 +161,8 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
 MoneyProgress::~MoneyProgress()
 {
+    barpoint.setX(newbar.x());
+    barpoint.setY(newbar.y());
     QSettings settings("MuYin", "MoneyProgress_win");
     // 保存设置
     settings.setValue("money", money);
@@ -133,6 +171,7 @@ MoneyProgress::~MoneyProgress()
     settings.setValue("workDown", workDown);
     settings.setValue("sleepUp", sleepUp);
     settings.setValue("sleepDown", sleepDown);
+    settings.setValue("barpoint",barpoint);
     // settings.setValue("geometry", this->saveGeometry());
     // settings.setValue("windowState", this->saveState());
 
@@ -160,8 +199,9 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason)
                                 ((QCursor().pos().y() + 210) > QApplication::screenAt(QCursor().pos())->geometry().height() ? QApplication::screenAt(QCursor().pos())->geometry().height() - 210 : QCursor().pos().y() - 210),
                                 300, 180);
 
-        updateM();
+//        updateM();
         iconmessage.show();
+        update();
         timer2->start(2000); //
         break;
     case QSystemTrayIcon::DoubleClick:
@@ -206,6 +246,9 @@ void MoneyProgress::update()
         iconmessage.update(progress, moneyday);
         qDebug() << progress;
     }
+    if (newbar.isVisible()){
+        newbar.updatetext(QString::number(moneyday*progress/1000,'f',5));
+    }
 }
 void MoneyProgress::updateM()
 {
@@ -230,6 +273,7 @@ void MoneyProgress::updateM()
 
     qDebug() << progress;
     iconmessage.update(progress, moneyday);
+    newbar.updatetext(QString::number(moneyday*progress/1000,'f',5));
 }
 
 void MoneyProgress::createMenu()
@@ -322,14 +366,8 @@ void MoneyProgress::mouseMoveEvent(QMouseEvent *event) // 窗口移动事件
 
 void MoneyProgress::on_Startcalculate_clicked()
 {
-    // 启动定时器
-    // 计时器 用来更新
-    QTimer *timer = new QTimer;
-    //    void (MoneyProgress:: *pup)(int) = &MoneyProgress::update;
-    //    QOverload::of(&QComboBox::currentIndexChanged),[=](int index){ /* … */ })
+//
 
-    connect(timer, &QTimer::timeout, this, qOverload<>(&MoneyProgress::update));
-    timer->start(1000); // 每分钟更新一次 后面看看要不要改成可修改的
 }
 
 void MoneyProgress::on_timeWorkup_userTimeChanged(const QTime &time)
@@ -381,3 +419,20 @@ void MoneyProgress::on_workDay_editingFinished()
     update();
     
 }
+
+void MoneyProgress::on_barcheck_stateChanged(int arg1)
+{
+    if(arg1){
+//        newbar.setGeometry(289,125,barpoint.x(),barpoint.y());
+        newbar.show();
+        newbar.move(barpoint.x(),barpoint.y());
+        //移动位置
+        qDebug()<<newbar.x()<<newbar.y();
+//        newbar.move(this->x()+this->width()*2/5,this->y()+this->height()*3/4);
+        ui->hide_label->setVisible(true);
+    }else{
+        newbar.hide();
+        ui->hide_label->setVisible(false);
+    }
+}
+

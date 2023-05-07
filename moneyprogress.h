@@ -3,12 +3,17 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include "message.h"
+#include <message.h>
 #include <QSystemTrayIcon>    //任务栏类
 #include <QMenu>    //菜单类
 #include <QTime>
 #include <QSettings>
 #include <QCoreApplication>
+
+#include <bar.h>
+
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MoneyProgress; }
 QT_END_NAMESPACE
@@ -25,6 +30,7 @@ private:
     Ui::MoneyProgress *ui;
     //任务栏进度条窗口
     message iconmessage = message();
+    bar newbar = bar();
 
     //设置
 
@@ -39,6 +45,13 @@ private:
     float money=0;
     //天数
     int days=0;
+
+
+    //任务栏文字位置
+    QPoint barpoint;
+
+
+
 
     //窗口任务栏属性
     QSystemTrayIcon *trayIcon;
@@ -78,5 +91,6 @@ private slots:
     void on_timeSleepdown_userTimeChanged(const QTime &time);
     void on_moneyMonth_editingFinished();
     void on_workDay_editingFinished();
+    void on_barcheck_stateChanged(int arg1);
 };
 #endif // MONEYPROGRESS_H

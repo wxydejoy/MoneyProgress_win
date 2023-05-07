@@ -22,6 +22,9 @@ set(PROJECT_SOURCES
         message.ui
         message.cpp
         message.h
+        bar.h
+        bar.cpp
+        bar.ui
         img.qrc
         logo.rc
 )
