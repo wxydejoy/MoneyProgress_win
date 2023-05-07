@@ -132,7 +132,10 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
     ui->labelAbout->setOpenExternalLinks(true); // 如果没有这句，就只能通过linkActivated信号，连接到自定义槽函数中打开
     ui->labelAbout->hide();
-    //    lab->setWindowTitle("Test Html support");
+
+    ui->moneyMonth->setAttribute(Qt::WA_InputMethodEnabled, false);	//设置账号输入框点击时无法输入中文
+    ui->workDay->setAttribute(Qt::WA_InputMethodEnabled, false);	//设置账号输入框点击时无法输入中文
+
 
     updateM();
 
@@ -140,7 +143,7 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     //    newbar.show();
     // 启动定时器
     // 计时器 用来更新
-    QTimer *timer = new QTimer;
+//    QTimer *timer = new QTimer;
     //    void (MoneyProgress:: *pup)(int) = &MoneyProgress::update;
     //    QOverload::of(&QComboBox::currentIndexChanged),[=](int index){ /* … */ })
 
@@ -415,7 +418,7 @@ void MoneyProgress::on_moneyMonth_editingFinished()
 
 void MoneyProgress::on_workDay_editingFinished()
 {
-    days = ui->workDay->text().toInt();
+       days = ui->workDay->text().toFloat();
     update();
     
 }
