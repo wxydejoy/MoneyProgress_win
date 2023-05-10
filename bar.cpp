@@ -21,13 +21,16 @@ bar::~bar()
 
 
 void bar::updatetext(QString text){
-    ui->label_text->setText("您今天已经赚了"+text+"元");
+    ui->label_text->setText(text);
 }
 
 
 
 
-
+//qss修改label颜色
+void bar::setlabelcolor(QString color){
+    ui->label_text->setStyleSheet("color:"+color);
+}
 
 
 

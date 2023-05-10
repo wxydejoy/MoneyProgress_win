@@ -49,7 +49,10 @@ private:
 
     //任务栏文字位置
     QPoint barpoint;
-
+    //任务栏文本
+    QString bartext;
+    //任务栏颜色
+    QString barcolor;
 
 
 
@@ -92,5 +95,7 @@ private slots:
     void on_moneyMonth_editingFinished();
     void on_workDay_editingFinished();
     void on_barcheck_stateChanged(int arg1);
+    void on_barcolor_editingFinished();
+    void on_bartext_editingFinished();
 };
 #endif // MONEYPROGRESS_H

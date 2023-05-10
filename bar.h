@@ -15,7 +15,7 @@ public:
     explicit bar(QWidget *parent = nullptr);
     ~bar();
     void updatetext(QString text);
-
+    void setlabelcolor(QString color);
 private:
     Ui::bar *ui;
 

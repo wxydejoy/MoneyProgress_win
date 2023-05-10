@@ -7,15 +7,15 @@
 #include <QtDebug>
 #include <QScreen>
 #include <QRect>
-
+#include <QMessageBox>
 #include <QDesktopWidget>
 
 MoneyProgress::MoneyProgress(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MoneyProgress)
 {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::ToolTip); // 隐藏标题栏
-    this->setAttribute(Qt::WA_TranslucentBackground);                                      // 背景透明
+    this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::ToolTip); // 隐藏标题栏
+    this->setAttribute(Qt::WA_TranslucentBackground);                                                    // 背景透明
 
     this->setWindowIcon(QIcon(":/img/ico/48x48.ico"));
 
@@ -47,9 +47,11 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     //    trayIcon->showMessage("Test","contestt",QIcon(":/img/ico/32x32.ico"));
     //    message iconmessage = message();
 
-
-
     ui->hide_label->setVisible(false);
+    ui->barcolorlabel->setVisible(false);
+    ui->barcolor->setVisible(false);
+    ui->bartext->setVisible(false);
+    ui->bartextlabel->setVisible(false);
 
     // 右下角弹窗
     QDesktopWidget *pDeskdop = QApplication::desktop();
@@ -62,18 +64,18 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
     // 注册表的一些操作
     QSettings settings("MuYin", "MoneyProgress_win");
-//    settings = QSettings(QSettings::NativeFormat, QSettings::UserScope,QCoreApplication::organizationName(), QCoreApplication::applicationName());
-    qDebug()<<settings.applicationName()<<settings.organizationName();
-//    settings.set
+    //    settings = QSettings(QSettings::NativeFormat, QSettings::UserScope,QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    qDebug() << settings.applicationName() << settings.organizationName();
+    //    settings.set
     //    QCoreApplication::setOrganizationName(QString());
     // QCoreApplication::setApplicationName(QString("MoneyProgress_win"));
     settings.sync();
-    qDebug()<<settings.value("set");
-    qDebug()<<settings.value("workDown");
-    qDebug()<<settings.value("barpoint");
+    qDebug() << settings.value("set");
+    qDebug() << settings.value("workDown");
+    qDebug() << settings.value("barpoint");
     if (settings.value("set").toBool() == true)
     { // 如果设置了
-        qDebug()<< settings.value("workDown");
+        qDebug() << settings.value("workDown");
         workDown = settings.value("workDown").toTime();
         workUp = settings.value("workUp").toTime();
         sleepDown = settings.value("sleepDown").toTime();
@@ -87,22 +89,50 @@ MoneyProgress::MoneyProgress(QWidget *parent)
         ui->timeSleepup->setTime(sleepUp);
         ui->moneyMonth->setText(QString::number(money));
         ui->workDay->setText(QString::number(days));
-        if(settings.value("barpoint").isValid()){
+        if (settings.value("barpoint").isValid())
+        {
             barpoint = settings.value("barpoint").toPoint();
             ui->barcheck->setChecked(true);
             newbar.show();
-            newbar.move(barpoint.x(),barpoint.y());
-        }else{
-//            this->x()+this->width()*2/5,this->y()+this->height()*3/4
-            barpoint.setX(QApplication::screenAt(QCursor().pos())->geometry().width()/2-newbar.width()/2);
-            barpoint.setY(QApplication::screenAt(QCursor().pos())->geometry().height()/2+newbar.height());
+            newbar.move(barpoint.x(), barpoint.y());
         }
-        
+        else
+        {
+            //            this->x()+this->width()*2/5,this->y()+this->height()*3/4
+            barpoint.setX(QApplication::screenAt(QCursor().pos())->geometry().width() / 2 - newbar.width() / 2);
+            barpoint.setY(QApplication::screenAt(QCursor().pos())->geometry().height() / 2 + newbar.height());
+        }
+        //判断是否设置了任务栏颜色
+        if (settings.value("barcolor").isValid())
+        {
+            barcolor = settings.value("barcolor").toString();
+            ui->barcolor->setText(barcolor);
+            newbar.setlabelcolor(barcolor);
+        }
+        else
+        {
+            barcolor = "#ffd83a";
+            ui->barcolor->setText(barcolor);
+            newbar.setlabelcolor(barcolor);
+        }
+        //判断是否设置了任务栏文本
+        if (settings.value("bartext").isValid())
+        {
+            bartext = settings.value("bartext").toString();
+            ui->bartext->setText(bartext);
+            updateM();
+        }
+        else
+        {
+            bartext = "您今天已经赚了x元";
+            ui->bartext->setText(bartext);
+            updateM();
+        }
 
     }
     else
     { // 如果没有设置
-        settings.setValue("set",true);
+        settings.setValue("set", true);
         workDown = ui->timeWorkdown->time();
         workUp = ui->timeWorkup->time();
         sleepDown = ui->timeSleepdown->time();
@@ -110,8 +140,8 @@ MoneyProgress::MoneyProgress(QWidget *parent)
         money = 300;
         days = 24;
 
-        barpoint.setX(QApplication::screenAt(QCursor().pos())->geometry().width()/2-newbar.width()/2);
-        barpoint.setY(QApplication::screenAt(QCursor().pos())->geometry().height()/2+newbar.height());
+        barpoint.setX(QApplication::screenAt(QCursor().pos())->geometry().width() / 2 - newbar.width() / 2);
+        barpoint.setY(QApplication::screenAt(QCursor().pos())->geometry().height() / 2 + newbar.height());
 
         settings.setValue("workDown", workDown);
         settings.setValue("workUp", workUp);
@@ -119,10 +149,14 @@ MoneyProgress::MoneyProgress(QWidget *parent)
         settings.setValue("sleepUp", sleepUp);
         settings.setValue("money", money);
         settings.setValue("days", days);
-        settings.setValue("barpoint",barpoint);
+        // settings.setValue("barpoint", barpoint);
+        // settings.setValue("barcolor", barcolor);
+        // settings.setValue("bartext", bartext);
+
+        //判断是否勾选任务栏文字
+
 
         settings.sync();
-
     }
 
     //    QString str;
@@ -133,9 +167,8 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     ui->labelAbout->setOpenExternalLinks(true); // 如果没有这句，就只能通过linkActivated信号，连接到自定义槽函数中打开
     ui->labelAbout->hide();
 
-    ui->moneyMonth->setAttribute(Qt::WA_InputMethodEnabled, false);	//设置账号输入框点击时无法输入中文
-    ui->workDay->setAttribute(Qt::WA_InputMethodEnabled, false);	//设置账号输入框点击时无法输入中文
-
+    ui->moneyMonth->setAttribute(Qt::WA_InputMethodEnabled, false); // 设置账号输入框点击时无法输入中文
+    ui->workDay->setAttribute(Qt::WA_InputMethodEnabled, false);    // 设置账号输入框点击时无法输入中文
 
     updateM();
 
@@ -143,24 +176,21 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     //    newbar.show();
     // 启动定时器
     // 计时器 用来更新
-//    QTimer *timer = new QTimer;
+    //    QTimer *timer = new QTimer;
     //    void (MoneyProgress:: *pup)(int) = &MoneyProgress::update;
     //    QOverload::of(&QComboBox::currentIndexChanged),[=](int index){ /* … */ })
 
     connect(timer, &QTimer::timeout, this, qOverload<>(&MoneyProgress::update));
     timer->start(1000); // 每分钟更新一次 后面看看要不要改成可修改的
 
-
-
     connect(timer2, &QTimer::timeout, &iconmessage, &message::hide);
 
     //    this->hide()
 
-//    newbar.show();
+    //    newbar.show();
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onTrayActivated(QSystemTrayIcon::ActivationReason)));
 }
-
 
 MoneyProgress::~MoneyProgress()
 {
@@ -174,17 +204,26 @@ MoneyProgress::~MoneyProgress()
     settings.setValue("workDown", workDown);
     settings.setValue("sleepUp", sleepUp);
     settings.setValue("sleepDown", sleepDown);
-    settings.setValue("barpoint",barpoint);
+//    settings.setValue("barpoint", barpoint);
     // settings.setValue("geometry", this->saveGeometry());
     // settings.setValue("windowState", this->saveState());
-
+    if (ui->barcheck->isChecked())
+    {
+        settings.setValue("barpoint", barpoint);
+        settings.setValue("barcolor", barcolor);
+        settings.setValue("bartext", bartext);
+    }
+    else
+    {
+        settings.remove("barpoint");
+        settings.remove("barcolor");
+        settings.remove("bartext");
+    }
     // 保存设置
     settings.sync();
 
     delete ui;
 }
-
-
 
 void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason)
 {
@@ -202,7 +241,7 @@ void MoneyProgress::onTrayActivated(QSystemTrayIcon::ActivationReason reason)
                                 ((QCursor().pos().y() + 210) > QApplication::screenAt(QCursor().pos())->geometry().height() ? QApplication::screenAt(QCursor().pos())->geometry().height() - 210 : QCursor().pos().y() - 210),
                                 300, 180);
 
-//        updateM();
+        //        updateM();
         iconmessage.show();
         update();
         timer2->start(2000); //
@@ -228,7 +267,7 @@ void MoneyProgress::update()
     float moneyday = money / days;
     float moneysecond = moneyday / second;
 
-    if (QTime::currentTime() < sleepUp) //判断当前使是午休之前还是之后
+    if (QTime::currentTime() < sleepUp) // 判断当前使是午休之前还是之后
         progress = workUp.secsTo(QTime::currentTime()) * 1000 / second;
     else
         progress = (workUp.secsTo(QTime::currentTime()) - sleepUp.secsTo(sleepDown)) * 1000 / second;
@@ -236,7 +275,7 @@ void MoneyProgress::update()
     // 判断两个界面是否可见
     if (this->isVisible())
     {
-        ui->labelMoneyNow->setText("您当前已经挣了"+QString::number(moneyday*progress/1000,'f',1)+"元;");
+        ui->labelMoneyNow->setText("您当前已经挣了" + QString::number(moneyday * progress / 1000, 'f', 1) + "元;");
         ui->labelDay->setText("您一月工作" + QString::number(days) + "天;");
         ui->labelMoneyDay->setText("您一天能挣" + QString::number(moneyday, 'f', 1) + "元;");
         ui->labelHourDay->setText("您一天工作" + QString::number(hours, 'f', 1) + "小时;");
@@ -245,12 +284,22 @@ void MoneyProgress::update()
     if (iconmessage.isVisible())
     {
 
-
         iconmessage.update(progress, moneyday);
         qDebug() << progress;
     }
-    if (newbar.isVisible()){
-        newbar.updatetext(QString::number(moneyday*progress/1000,'f',5));
+    if (newbar.isVisible())
+    {
+        QString text = ui->bartext->text();
+        if (text.contains("x"))
+        {
+            // 修改文本 将x替换为数字 QString::number(moneyday*progress/1000,'f',5)
+            text.replace("x", QString::number(moneyday * progress / 1000, 'f', 5));
+            newbar.updatetext(text);
+        }
+        else
+        {
+            QMessageBox::warning(this, "警告", "文本格式不正确");
+        }
     }
 }
 void MoneyProgress::updateM()
@@ -268,7 +317,7 @@ void MoneyProgress::updateM()
     else
         progress = (workUp.secsTo(QTime::currentTime()) - sleepUp.secsTo(sleepDown)) * 1000 / second;
     // 判断两个界面是否可见
-    ui->labelMoneyNow->setText("您当前已经挣了"+QString::number(moneyday*progress/1000,'f',1)+"元;");
+    ui->labelMoneyNow->setText("您当前已经挣了" + QString::number(moneyday * progress / 1000, 'f', 1) + "元;");
     ui->labelDay->setText("您一月工作" + QString::number(days) + "天;");
     ui->labelMoneyDay->setText("您一天能挣" + QString::number(moneyday, 'f', 1) + "元;");
     ui->labelHourDay->setText("您一天工作" + QString::number(hours, 'f', 1) + "小时;");
@@ -276,7 +325,17 @@ void MoneyProgress::updateM()
 
     qDebug() << progress;
     iconmessage.update(progress, moneyday);
-    newbar.updatetext(QString::number(moneyday*progress/1000,'f',5));
+    QString text = ui->bartext->text();
+    if (text.contains("x"))
+    {
+        // 修改文本 将x替换为数字 QString::number(moneyday*progress/1000,'f',5)
+        text.replace("x", QString::number(moneyday * progress / 1000, 'f', 5));
+        newbar.updatetext(text);
+    }
+    else
+    {
+        QMessageBox::warning(this, "警告", "文本格式不正确");
+    }
 }
 
 void MoneyProgress::createMenu()
@@ -332,8 +391,6 @@ void MoneyProgress::keyPressEvent(QKeyEvent *event)
     }
 }
 
-
-
 void MoneyProgress::mousePressEvent(QMouseEvent *event) // 窗口移动事件
 {
     // 当鼠标左键点击时.
@@ -369,14 +426,12 @@ void MoneyProgress::mouseMoveEvent(QMouseEvent *event) // 窗口移动事件
 
 void MoneyProgress::on_Startcalculate_clicked()
 {
-//
-
+    //
 }
 
 void MoneyProgress::on_timeWorkup_userTimeChanged(const QTime &time)
 {
     workUp = time;
-    
 }
 
 void MoneyProgress::on_timeWorkdown_userTimeChanged(const QTime &time)
@@ -386,7 +441,6 @@ void MoneyProgress::on_timeWorkdown_userTimeChanged(const QTime &time)
 
     qDebug("工作时间 %f", (workUp.secsTo(workDown) - sleepUp.secsTo(sleepDown)) / 3600.0);
     // 保存设置
-   
 
     update();
 }
@@ -396,7 +450,6 @@ void MoneyProgress::on_timeSleepup_userTimeChanged(const QTime &time)
     sleepUp = time;
     update();
     qDebug("午休时间 %f", sleepUp.secsTo(sleepDown) / 3600.0);
-
 }
 
 void MoneyProgress::on_timeSleepdown_userTimeChanged(const QTime &time)
@@ -404,38 +457,69 @@ void MoneyProgress::on_timeSleepdown_userTimeChanged(const QTime &time)
     sleepDown = time;
     update();
     qDebug("午休时间 %f", sleepUp.secsTo(sleepDown) / 3600.0);
-    
-    // 保存设置
 
+    // 保存设置
 }
 
 void MoneyProgress::on_moneyMonth_editingFinished()
 {
     money = ui->moneyMonth->text().toInt();
     update();
-   
 }
 
 void MoneyProgress::on_workDay_editingFinished()
 {
-       days = ui->workDay->text().toFloat();
+    days = ui->workDay->text().toFloat();
     update();
-    
 }
 
 void MoneyProgress::on_barcheck_stateChanged(int arg1)
 {
-    if(arg1){
-//        newbar.setGeometry(289,125,barpoint.x(),barpoint.y());
+    if (arg1)
+    {
+        //        newbar.setGeometry(289,125,barpoint.x(),barpoint.y());
         newbar.show();
-        newbar.move(barpoint.x(),barpoint.y());
-        //移动位置
-        qDebug()<<newbar.x()<<newbar.y();
-//        newbar.move(this->x()+this->width()*2/5,this->y()+this->height()*3/4);
+        newbar.move(barpoint.x(), barpoint.y());
+        // 移动位置
+        qDebug() << newbar.x() << newbar.y();
+        //        newbar.move(this->x()+this->width()*2/5,this->y()+this->height()*3/4);
         ui->hide_label->setVisible(true);
-    }else{
+        ui->barcolorlabel->setVisible(true);
+        ui->barcolor->setVisible(true);
+        ui->bartext->setVisible(true);
+        ui->bartextlabel->setVisible(true);
+    }
+    else
+    {
         newbar.hide();
         ui->hide_label->setVisible(false);
+        ui->barcolorlabel->setVisible(false);
+        ui->barcolor->setVisible(false);
+        ui->bartext->setVisible(false);
+        ui->bartextlabel->setVisible(false);
     }
 }
 
+void MoneyProgress::on_barcolor_editingFinished()
+{
+    // 判断是否合法并使用lineedit里面的字符修改颜色
+    QString color = ui->barcolor->text();
+    if (color[0] == '#')
+    {
+        if (color.length() == 7)
+        {
+            barcolor = color;
+            // 修改颜色
+            newbar.setlabelcolor(color);
+        }
+        else
+        {
+            QMessageBox::warning(this, "警告", "颜色格式不正确");
+        }
+    }
+}
+void MoneyProgress::on_bartext_editingFinished()
+{
+    bartext = ui->bartext->text();
+    update();
+}
