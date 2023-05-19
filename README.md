@@ -1,3 +1,13 @@
+<!--
+ * @Author: weiekko weiekko@gmail.com
+ * @Date: 2023-04-08 19:52:07
+ * @LastEditors: weiekko weiekko@gmail.com
+ * @LastEditTime: 2023-05-19 23:02:35
+ * @FilePath: \MoneyProgress_win\README.md
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by weiekko weiekko@gmail.com, All Rights Reserved. 
+-->
 # MoneyProgress_win
 MoneyProgress_win
 ## 截图
@@ -15,3 +25,4 @@ a 作者信息
 https://github.com/Lakr233/MoneyProgress
 
 
+## action
