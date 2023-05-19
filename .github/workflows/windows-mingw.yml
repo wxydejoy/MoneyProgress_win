@@ -1,5 +1,6 @@
 name: Windows MinGW
 on: 
+  workflow_dispatch:
   push:
     paths:
       - '*.pro'
