@@ -46,13 +46,13 @@ jobs:
       - name: where is qmake & where is mingw32-make
         shell: pwsh
         run: |
-          Get-Command -Name 'qmake' | Format-List
+          Get-Command -Name 'cmake' | Format-List
           Get-Command -Name 'mingw32-make' | Format-List
       - name: mingw-build
         id: build
         shell: cmd
         run: |
-          qmake
+          cmake
           mingw32-make
       - name: package
         id: package      
