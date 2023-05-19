@@ -52,7 +52,7 @@ jobs:
         id: build
         shell: cmd
         run: |
-          cmake
+          cmake .
           mingw32-make
       - name: package
         id: package      
