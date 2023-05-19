@@ -9,6 +9,7 @@
 #include <QRect>
 #include <QMessageBox>
 #include <QDesktopWidget>
+#include <QObject>
 
 MoneyProgress::MoneyProgress(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MoneyProgress)
@@ -16,6 +17,8 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     ui->setupUi(this);
     this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::ToolTip); // 隐藏标题栏
     this->setAttribute(Qt::WA_TranslucentBackground);                                                    // 背景透明
+
+//    this->setParent(&newbar);
 
     this->setWindowIcon(QIcon(":/img/ico/48x48.ico"));
 
@@ -52,6 +55,7 @@ MoneyProgress::MoneyProgress(QWidget *parent)
     ui->barcolor->setVisible(false);
     ui->bartext->setVisible(false);
     ui->bartextlabel->setVisible(false);
+    ui->checkBoxicon->setVisible(false);
 
     // 右下角弹窗
     QDesktopWidget *pDeskdop = QApplication::desktop();
@@ -128,6 +132,19 @@ MoneyProgress::MoneyProgress(QWidget *parent)
             ui->bartext->setText(bartext);
             updateM();
         }
+        if (settings.value("baricon").isValid())
+        {
+            baricon = settings.value("baricon").toBool();
+            ui->checkBoxicon->setChecked(baricon);
+            updateM();
+        }
+        else
+        {
+            baricon = false;
+            ui->checkBoxicon->setChecked(baricon);
+            updateM();
+        }
+        settings.sync();
 
     }
     else
@@ -212,12 +229,15 @@ MoneyProgress::~MoneyProgress()
         settings.setValue("barpoint", barpoint);
         settings.setValue("barcolor", barcolor);
         settings.setValue("bartext", bartext);
+        settings.setValue("baricon", baricon);
+
     }
     else
     {
         settings.remove("barpoint");
         settings.remove("barcolor");
         settings.remove("bartext");
+        settings.remove("baricon");
     }
     // 保存设置
     settings.sync();
@@ -293,13 +313,14 @@ void MoneyProgress::update()
         if (text.contains("x"))
         {
             // 修改文本 将x替换为数字 QString::number(moneyday*progress/1000,'f',5)
-            text.replace("x", QString::number(moneyday * progress / 1000, 'f', 5));
+            text.replace("x", QString::number(moneyday * progress / 1000, 'f', 2));
             newbar.updatetext(text);
         }
         else
         {
             QMessageBox::warning(this, "警告", "文本格式不正确");
         }
+         newbar.setIcon(baricon);
     }
 }
 void MoneyProgress::updateM()
@@ -329,13 +350,14 @@ void MoneyProgress::updateM()
     if (text.contains("x"))
     {
         // 修改文本 将x替换为数字 QString::number(moneyday*progress/1000,'f',5)
-        text.replace("x", QString::number(moneyday * progress / 1000, 'f', 5));
+        text.replace("x", QString::number(moneyday * progress / 1000, 'f', 2));
         newbar.updatetext(text);
     }
     else
     {
         QMessageBox::warning(this, "警告", "文本格式不正确");
     }
+    newbar.setIcon(baricon);
 }
 
 void MoneyProgress::createMenu()
@@ -488,6 +510,7 @@ void MoneyProgress::on_barcheck_stateChanged(int arg1)
         ui->barcolor->setVisible(true);
         ui->bartext->setVisible(true);
         ui->bartextlabel->setVisible(true);
+        ui->checkBoxicon->setVisible(true);
     }
     else
     {
@@ -497,6 +520,7 @@ void MoneyProgress::on_barcheck_stateChanged(int arg1)
         ui->barcolor->setVisible(false);
         ui->bartext->setVisible(false);
         ui->bartextlabel->setVisible(false);
+        ui->checkBoxicon->setVisible(false);
     }
 }
 
@@ -523,3 +547,10 @@ void MoneyProgress::on_bartext_editingFinished()
     bartext = ui->bartext->text();
     update();
 }
+
+void MoneyProgress::on_checkBoxicon_stateChanged(int arg1)
+{
+    newbar.setIcon(arg1);
+    baricon = (bool) arg1;
+}
+

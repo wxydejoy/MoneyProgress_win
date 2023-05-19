@@ -16,6 +16,7 @@ public:
     ~bar();
     void updatetext(QString text);
     void setlabelcolor(QString color);
+    void setIcon(bool state);
 private:
     Ui::bar *ui;
 

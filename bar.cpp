@@ -33,6 +33,9 @@ void bar::setlabelcolor(QString color){
 }
 
 
+void bar::setIcon(bool state){
+    ui->label_icon->setVisible(state);
+}
 
 
 

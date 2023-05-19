@@ -54,6 +54,8 @@ private:
     //任务栏颜色
     QString barcolor;
 
+    bool baricon;
+
 
 
     //窗口任务栏属性
@@ -97,5 +99,6 @@ private slots:
     void on_barcheck_stateChanged(int arg1);
     void on_barcolor_editingFinished();
     void on_bartext_editingFinished();
+    void on_checkBoxicon_stateChanged(int arg1);
 };
 #endif // MONEYPROGRESS_H

@@ -28,7 +28,7 @@
      <rect>
       <x>250</x>
       <y>20</y>
-      <width>334</width>
+      <width>347</width>
       <height>444</height>
      </rect>
     </property>
@@ -466,6 +466,19 @@
      </item>
      <item row="8" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QCheckBox" name="checkBoxicon">
+         <property name="text">
+          <string>图标</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="tristate">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QLabel" name="barcolorlabel">
          <property name="text">
