@@ -41,7 +41,7 @@ MoneyProgress::MoneyProgress(QWidget *parent)
 
     // 实例化托盘图标控件
     trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon(QIcon(":/img/ico/32x32.ico")); // 设置托盘图标显示
+    trayIcon->setIcon(QIcon(":/img/ico/48x48.ico")); // 设置托盘图标显示
     trayIcon->setToolTip("钱条");                    // 显示提示信息
     //    trayIcon->setVisible(true);
     //    trayIcon->showMessage("托盘","托盘管理",QSystemTrayIcon::Information,10000);
@@ -318,9 +318,10 @@ void MoneyProgress::update()
         }
         else
         {
-            QMessageBox::warning(this, "警告", "文本格式不正确");
+        QMessageBox::warning(this, "警告", "文本格式不正确 请在文本中加入x");
+        ui->bartext->setText("您今天已经挣了x元");
         }
-         newbar.setIcon(baricon);
+        newbar.setIcon(baricon);
     }
 }
 void MoneyProgress::updateM()
@@ -355,7 +356,8 @@ void MoneyProgress::updateM()
     }
     else
     {
-        QMessageBox::warning(this, "警告", "文本格式不正确");
+        QMessageBox::warning(this, "警告", "文本格式不正确 请在文本中加入x");
+        ui->bartext->setText("您今天已经挣了x元");
     }
     newbar.setIcon(baricon);
 }
@@ -539,6 +541,8 @@ void MoneyProgress::on_barcolor_editingFinished()
         else
         {
             QMessageBox::warning(this, "警告", "颜色格式不正确");
+            // 设置为默认颜色
+            ui->barcolor->setText(barcolor);
         }
     }
 }

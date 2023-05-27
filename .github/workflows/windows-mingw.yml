@@ -1,6 +1,5 @@
 name: Windows MinGW
 on: 
-  workflow_dispatch:
   push:
     paths:
       - '*.pro'
@@ -46,13 +45,13 @@ jobs:
       - name: where is qmake & where is mingw32-make
         shell: pwsh
         run: |
-          Get-Command -Name 'cmake' | Format-List
+          Get-Command -Name 'qmake' | Format-List
           Get-Command -Name 'mingw32-make' | Format-List
       - name: mingw-build
         id: build
         shell: cmd
         run: |
-          cmake .
+          qmake
           mingw32-make
       - name: package
         id: package      

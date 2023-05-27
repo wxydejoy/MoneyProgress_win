@@ -26,7 +26,7 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>220</x>
       <y>20</y>
       <width>347</width>
       <height>444</height>
