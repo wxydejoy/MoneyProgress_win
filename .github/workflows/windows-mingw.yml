@@ -25,7 +25,7 @@ jobs:
             qt_tools: "tools_mingw,8.1.0-1-202004170606,qt.tools.win32_mingw810"
             qt_tools_mingw_install: mingw810_32
     env:
-      targetName: HelloActions-Qt.exe
+      targetName: MoneyProgress_win.exe
     steps:
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
