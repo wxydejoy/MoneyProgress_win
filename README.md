@@ -2,7 +2,7 @@
  * @Author: weiekko weiekko@gmail.com
  * @Date: 2023-04-08 19:52:07
  * @LastEditors: weiekko weiekko@gmail.com
- * @LastEditTime: 2023-05-19 23:02:35
+ * @LastEditTime: 2023-05-28 00:59:15
  * @FilePath: \MoneyProgress_win\README.md
  * @Description: 
  * 
@@ -34,3 +34,8 @@ https://github.com/Lakr233/MoneyProgress
 3、然后就可以看到我们将qq设置为启动项了。
 
 4、我们还可以进入任务管理器中看看我们有没有添加成功。
+
+
+& scripts\windows-mingw-publish.ps1 ${env:archiveName} ${env:targetName}
+           $name = ${env:archiveName}
+           echo "::set-output name=packageName::$name"       

@@ -17,7 +17,7 @@ function Main() {
 
     New-Item -ItemType Directory $archiveName
     # 拷贝exe
-    Copy-Item bin\release\$targetName $archiveName\
+    Copy-Item release\$targetName $archiveName\
     
     # 拷贝额外的文件：主要用于网络访问
     # Copy-Item ExtBin\*.dll $archiveName\
