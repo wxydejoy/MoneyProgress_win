@@ -10,6 +10,9 @@ on:
       - '*.pro'
       - 'src/**'
       - '.github/workflows/windows-mingw.yml' 
+  # 手动
+  workflow_dispatch: 
+
 jobs:
   build:
     name: Build
