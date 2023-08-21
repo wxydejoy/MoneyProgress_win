@@ -10,6 +10,9 @@
 -->
 # MoneyProgress_win
 MoneyProgress_win
+
+国内下载地址 https://wekko.lanzout.com/b0dz7473a?password=620b
+
 ## 截图
 ![uTools_1683466686757](https://user-images.githubusercontent.com/81625961/236680926-2b2a745f-36f1-4745-8d14-fe6c7095b207.png)
 ![uTools_1683466721134](https://user-images.githubusercontent.com/81625961/236680921-2770f18e-b8aa-4488-9084-938c7faaa3ab.png)
