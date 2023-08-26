@@ -23,3 +23,4 @@ release/qrc_img.cpp
 release/qrc_img.o
 release/qrc_qmake_qmake_immediate.cpp
 release/qrc_qmake_qmake_immediate.o
+/package

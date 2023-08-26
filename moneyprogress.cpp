@@ -84,8 +84,8 @@ MoneyProgress::MoneyProgress(QWidget *parent)
         workUp = settings.value("workUp").toTime();
         sleepDown = settings.value("sleepDown").toTime();
         sleepUp = settings.value("sleepUp").toTime();
-        money = settings.value("money").toInt();
-        days = settings.value("days").toInt();
+        money = settings.value("money").toFloat();
+        days = settings.value("days").toFloat();
 
         ui->timeWorkdown->setTime(workDown);
         ui->timeWorkup->setTime(workUp);
@@ -287,6 +287,8 @@ void MoneyProgress::update()
     float moneyday = money / days;
     float moneysecond = moneyday / second;
 
+
+
     if (QTime::currentTime() < sleepUp) // 判断当前使是午休之前还是之后
         progress = workUp.secsTo(QTime::currentTime()) * 1000 / second;
     else
@@ -295,7 +297,7 @@ void MoneyProgress::update()
     // 判断两个界面是否可见
     if (this->isVisible())
     {
-        ui->labelMoneyNow->setText("您当前已经挣了" + QString::number(moneyday * progress / 1000, 'f', 1) + "元;");
+        ui->labelMoneyNow->setText("您当前已经挣了" + (moneyday * progress / 1000>0?QString::number(moneyday * progress / 1000, 'f', 1):"0") + "元;");
         ui->labelDay->setText("您一月工作" + QString::number(days) + "天;");
         ui->labelMoneyDay->setText("您一天能挣" + QString::number(moneyday, 'f', 1) + "元;");
         ui->labelHourDay->setText("您一天工作" + QString::number(hours, 'f', 1) + "小时;");
@@ -313,7 +315,7 @@ void MoneyProgress::update()
         if (text.contains("x"))
         {
             // 修改文本 将x替换为数字 QString::number(moneyday*progress/1000,'f',5)
-            text.replace("x", QString::number(moneyday * progress / 1000, 'f', 2));
+            text.replace("x", (moneyday * progress / 1000>0?QString::number(moneyday * progress / 1000, 'f', 1):"0"));
             newbar.updatetext(text);
         }
         else
@@ -339,7 +341,7 @@ void MoneyProgress::updateM()
     else
         progress = (workUp.secsTo(QTime::currentTime()) - sleepUp.secsTo(sleepDown)) * 1000 / second;
     // 判断两个界面是否可见
-    ui->labelMoneyNow->setText("您当前已经挣了" + QString::number(moneyday * progress / 1000, 'f', 1) + "元;");
+    ui->labelMoneyNow->setText("您当前已经挣了" + (moneyday * progress / 1000>0?QString::number(moneyday * progress / 1000, 'f', 1):"0") + "元;");
     ui->labelDay->setText("您一月工作" + QString::number(days) + "天;");
     ui->labelMoneyDay->setText("您一天能挣" + QString::number(moneyday, 'f', 1) + "元;");
     ui->labelHourDay->setText("您一天工作" + QString::number(hours, 'f', 1) + "小时;");
@@ -351,7 +353,7 @@ void MoneyProgress::updateM()
     if (text.contains("x"))
     {
         // 修改文本 将x替换为数字 QString::number(moneyday*progress/1000,'f',5)
-        text.replace("x", QString::number(moneyday * progress / 1000, 'f', 2));
+        text.replace("x", (moneyday * progress / 1000>0?QString::number(moneyday * progress / 1000, 'f', 1):"0"));
         newbar.updatetext(text);
     }
     else
